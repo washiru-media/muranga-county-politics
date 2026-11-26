@@ -1,34 +1,51 @@
 
-name: Extract website ZIP
+name: Extract Muranga County ZIP
 
 on:
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   extract:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract ZIP
+      - name: Extract ZIP folder
         run: |
-          mkdir -p /tmp/embu
-          unzip -q embu_supabase_luxury_multicategory.zip -d /tmp/embu
-          cp -r /tmp/embu/embu_supabase_luxury/. .
+          ZIP="muranga-county-politics-upgrade.zip"
 
-      - name: Remove ZIP
-        run: rm -f embu_supabase_luxury_multicategory.zip
+          if [ ! -f "$ZIP" ]; then
+            echo "ERROR: ZIP file not found: $ZIP"
+            exit 1
+          fi
+
+          mkdir -p /tmp/muranga-extract
+          unzip -oq "$ZIP" -d /tmp/muranga-extract
+
+          shopt -s dotglob nullglob
+          ITEMS=(/tmp/muranga-extract/*)
+
+          if [ ${#ITEMS[@]} -eq 1 ] && [ -d "${ITEMS[0]}" ]; then
+            rsync -a "${ITEMS[0]}/" ./
+          else
+            rsync -a /tmp/muranga-extract/ ./
+          fi
+
+      - name: Remove ZIP archive
+        run: rm -f muranga-county-politics-upgrade.zip
 
       - name: Commit extracted files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add -A
-          git commit -m "Extract website ZIP" || echo "No changes"
+          git commit -m "Extract Muranga County website upgrade" || echo "No changes to commit"
+
           git push
           

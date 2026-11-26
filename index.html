@@ -83,9 +83,9 @@
 <script>
 "use strict";
 // Add your project values here before deployment.
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-const FACEBOOK_PAGE_URL = "https://www.facebook.com/YOUR_PAGE_USERNAME";
+const SUPABASE_URL = "https://rrlkqjemdifczsdfpubv.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "sb_publishable_B4b8c1b-RA5UV0KB9Yxtpw_kn4bnFRa";
+const FACEBOOK_PAGE_URL = "https://www.facebook.com/share/1EDrkhi6GD/";
 const supabaseReady = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
 const db = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const $ = id => document.getElementById(id);
